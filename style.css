@@ -1,0 +1,38 @@
+.game {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 90%;
+  flex-direction: column;
+  padding: 5%;
+}
+
+.game-grid {
+  display: grid;
+  grid-template-rows: repeat(8, 1fr);
+  grid-template-columns: 1fr;
+  width: 20rem;
+  height: 20rem;
+  border: 1px solid black;
+}
+
+.game-row {
+  display: grid;
+  height: calc(20 / 8) rem;
+  grid-template-columns: repeat(8, 1fr);
+  grid-template-rows: 1fr;
+  width: 100%;
+}
+
+.game-cell {
+  width: 100%;
+  height: 100%;
+}
+
+.active {
+  background-color: green;
+}
+
+.target {
+  background-color: red;
+}
