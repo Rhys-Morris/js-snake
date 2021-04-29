@@ -1,5 +1,23 @@
 {
   "dependencies": {
     "sass": "^1.32.11"
-  }
+  },
+  "name": "snake",
+  "description": "// Fix render of snake with loss",
+  "version": "1.0.0",
+  "main": "script.js",
+  "devDependencies": {},
+  "scripts": {
+    "sass:watch": "sass ./stylesheets/main.scss style.css --watch"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Rhys-Morris/js-snake.git"
+  },
+  "author": "Rhys-Morris",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Rhys-Morris/js-snake/issues"
+  },
+  "homepage": "https://github.com/Rhys-Morris/js-snake#readme"
 }

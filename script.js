@@ -1,4 +1,6 @@
 import { renderGrid } from "./modules/grid.js";
+import { renderScores } from "./modules/scores.js";
+import { renderReset } from "./modules/reset.js";
 
 // ----- GLOBAL VARIABLES -----
 const snake = ["0-0"];
@@ -8,6 +10,8 @@ let speed = 200;
 let target = null;
 let columns = 20;
 let rows = 20;
+let score = 0;
+let highScore = 0;
 
 // ----- RENDER GAME GRID -----
 renderGrid(columns, rows);
@@ -79,6 +83,17 @@ function updateDirection() {
   direction = nextDirection;
 }
 
+function incrementScore() {
+  score += 10;
+  highScore = score > highScore ? score : highScore;
+}
+
+function handleLoss() {
+  score = 0;
+  renderScores(score, highScore);
+  renderReset();
+}
+
 async function makeMove(snake) {
   // Look at currently selected direction
   updateDirection();
@@ -86,7 +101,7 @@ async function makeMove(snake) {
   // Handle loss
   if (snake.length !== Array.from(new Set(snake)).length) {
     renderSnake(snake);
-    console.log("loser!");
+    handleLoss();
     return;
   }
 
@@ -105,6 +120,8 @@ async function makeMove(snake) {
     renderTarget(snake, cellIds);
     // Increase speed of snake
     speed = speed > 50 ? speed - 5 : speed;
+    incrementScore();
+    renderScores(score, highScore);
   }
 
   renderSnake(snake, snakeTail);
