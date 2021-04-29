@@ -1,24 +1,36 @@
 const snake = ["00"];
 let direction = "right";
-let speed = 1.0;
+let speed = 300;
 
 const cells = Array.from(document.querySelectorAll(".game-cell"));
+const cellIds = cells.map((cell) => cell.id);
 
-function renderSnake(snake, snakeTail = "false") {
-  console.log(snakeTail);
+const delay = async (ms) => new Promise((res) => setTimeout(res, ms));
+
+function renderSnake(snake, snakeTail = false) {
   snake.forEach((segment) => {
     document.getElementById(segment).classList.add("active");
   });
   // Guard against removing last cell on initial render
-  if (!snakeTail) {
-    console.log("here");
-    return;
-  }
+  if (!snakeTail) return;
 
   document.getElementById(snakeTail).classList.remove("active");
 }
 
-function moveSnake(snake, direction) {}
+function getRandomCell(cellIds) {
+  const randomIndex = Math.floor(Math.random() * cellIds.length);
+  return cellIds[randomIndex];
+}
+
+function renderTarget(snake, cellIds) {
+  let targetCell = getRandomCell(cellIds);
+
+  while (snake.includes(targetCell)) {
+    targetCell = getRandomCell(cellIds);
+  }
+
+  document.getElementById(targetCell).classList.add("target");
+}
 
 function getNextCell(direction, snake) {
   const snakeHead = snake.slice(0, 1)[0];
@@ -37,12 +49,12 @@ function getNextCell(direction, snake) {
 
   // Moving up - calculate next row
   if (direction === "up") {
-    nextRow = currentRow === 7 ? 0 : currentRow + 1;
+    nextRow = currentRow === 0 ? 7 : currentRow - 1;
   }
 
   // Moving down - calculate next row
   if (direction === "down") {
-    nextRow = currentRow === 0 ? 7 : currentRow - 1;
+    nextRow = currentRow === 7 ? 0 : currentRow + 1;
   }
 
   // Moving right - calculate next column
@@ -52,30 +64,40 @@ function getNextCell(direction, snake) {
 
   // Moving left - calculate next column
   if (direction === "left") {
-    nextColumn = currentRow === 7 ? 0 : currentRow + 1;
+    nextColumn = currentColumn === 0 ? 7 : currentColumn - 1;
   }
 
   return String(nextRow) + String(nextColumn);
 }
 
-function createMoveInterval(snake, direction) {
-  const snakeInterval = setInterval(() => {
-    const nextCell = getNextCell(direction, snake);
-    snake.unshift(nextCell);
-    const snakeTail = snake.pop();
-    console.log(snakeTail);
-    renderSnake(snake, snakeTail);
-  }, 1000);
+async function makeMove(snake) {
+  const nextCell = getNextCell(direction, snake);
+  snake.unshift(nextCell);
+  const snakeTail = snake.pop();
+  renderSnake(snake, snakeTail);
+  await delay(speed);
+  makeMove(snake);
 }
 
 function initialise() {
+  renderTarget(snake, cellIds);
   renderSnake(snake);
   const nextCell = getNextCell(direction, snake);
-  console.log(nextCell);
-  createMoveInterval(snake, direction);
+  makeMove(snake, direction);
 }
 
 // Initialise program
 window.onload = initialise();
 
 // Event Listeners to change direction
+window.addEventListener("keyup", (e) => {
+  // Check if valid key press
+  const validCodes = ["ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight"];
+  if (!validCodes.includes(e.code)) return;
+
+  console.log(e);
+  if (e.code === "ArrowUp" && direction !== "down") direction = "up";
+  if (e.code === "ArrowDown" && direction !== "up") direction = "down";
+  if (e.code === "ArrowLeft" && direction !== "right") direction = "left";
+  if (e.code === "ArrowRight" && direction !== "left") direction = "right";
+});
