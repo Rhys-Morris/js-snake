@@ -109,7 +109,7 @@ main {
   text-transform: uppercase;
   border: 2px solid #444;
   background-color: #efefef;
-  padding: 2rem 3.5em;
+  padding: 2rem 3rem;
 }
 .header__score-box > * {
   font-size: 1.8rem;
