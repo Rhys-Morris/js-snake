@@ -3,7 +3,7 @@ import { renderScores } from "./modules/scores.js";
 import { renderReset } from "./modules/reset.js";
 
 // ----- GLOBAL VARIABLES -----
-const snake = ["0-0"];
+let snake = ["0-0"];
 let direction = "right";
 let nextDirection = "right";
 let speed = 200;
@@ -88,10 +88,30 @@ function incrementScore() {
   highScore = score > highScore ? score : highScore;
 }
 
+function clearGrid() {
+  cells.forEach((cell) => {
+    cell.classList.remove("active");
+    cell.classList.remove("target");
+  });
+}
+
 function handleLoss() {
   score = 0;
+  direction = "right";
+  nextDirection = "right";
   renderScores(score, highScore);
   renderReset();
+  snake = ["0-0"];
+  document.querySelector(".reset").addEventListener(
+    "click",
+    () => {
+      clearGrid();
+      initialise();
+      const resetButton = document.querySelector(".reset");
+      document.querySelector("main").removeChild(resetButton);
+    },
+    { once: true }
+  );
 }
 
 async function makeMove(snake) {

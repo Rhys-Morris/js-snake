@@ -87,6 +87,8 @@ main {
   margin-top: 3rem;
   text-transform: uppercase;
   font-size: 1.8rem;
+  transition: all, 0.2s;
   &:hover {
+    transform: translateY(-2px);
   }
 }
