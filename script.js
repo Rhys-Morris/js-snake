@@ -1,6 +1,7 @@
 const snake = ["00"];
 let direction = "right";
-let speed = 300;
+let speed = 200;
+let target = null;
 
 const cells = Array.from(document.querySelectorAll(".game-cell"));
 const cellIds = cells.map((cell) => cell.id);
@@ -28,7 +29,7 @@ function renderTarget(snake, cellIds) {
   while (snake.includes(targetCell)) {
     targetCell = getRandomCell(cellIds);
   }
-
+  target = targetCell;
   document.getElementById(targetCell).classList.add("target");
 }
 
@@ -72,8 +73,26 @@ function getNextCell(direction, snake) {
 
 async function makeMove(snake) {
   const nextCell = getNextCell(direction, snake);
+
+  // Handle loss
+  if (snake.includes(nextCell)) {
+    console.log("loser!");
+    return;
+  }
   snake.unshift(nextCell);
   const snakeTail = snake.pop();
+
+  // Check if snake is on target - if so replace tail
+  if (snake[0] === target) {
+    snake.push(snakeTail);
+
+    // Remove target
+    document.getElementById(target).classList.remove("target");
+
+    // Render new target
+    renderTarget(snake, cellIds);
+  }
+
   renderSnake(snake, snakeTail);
   await delay(speed);
   makeMove(snake);
