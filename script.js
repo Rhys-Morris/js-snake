@@ -6,10 +6,10 @@ import { renderReset } from "./modules/reset.js";
 let snake = ["0-0"];
 let direction = "right";
 let nextDirection = "right";
-let speed = 200;
+let speed = 150;
 let target = null;
-let columns = 20;
-let rows = 20;
+let columns = 15;
+let rows = 15;
 let score = 0;
 let highScore = 0;
 
@@ -22,9 +22,13 @@ const cellIds = cells.map((cell) => cell.id);
 // ----- HELPER FUNCTIONS -----
 const delay = async (ms) => new Promise((res) => setTimeout(res, ms));
 
-function renderSnake(snake, snakeTail = false) {
-  console.log(snake);
+function renderSnake(snake, snakeTail = null, collision = null) {
   snake.forEach((segment) => {
+    if (segment === collision) {
+      document.getElementById(segment).classList.remove("active");
+      document.getElementById(segment).classList.add("collision");
+      return;
+    }
     document.getElementById(segment).classList.add("active");
   });
   // Guard against removing last cell on initial render
@@ -92,11 +96,13 @@ function clearGrid() {
   cells.forEach((cell) => {
     cell.classList.remove("active");
     cell.classList.remove("target");
+    cell.classList.remove("collision");
   });
 }
 
 function handleLoss() {
   score = 0;
+  speed = 175;
   direction = "right";
   nextDirection = "right";
   renderScores(score, highScore);
@@ -120,7 +126,7 @@ async function makeMove(snake) {
 
   // Handle loss
   if (snake.length !== Array.from(new Set(snake)).length) {
-    renderSnake(snake);
+    renderSnake(snake, false, snake[0]);
     handleLoss();
     return;
   }
@@ -139,7 +145,7 @@ async function makeMove(snake) {
     // Render new target
     renderTarget(snake, cellIds);
     // Increase speed of snake
-    speed = speed > 50 ? speed - 5 : speed;
+    speed = speed > 40 ? speed - 5 : speed;
     incrementScore();
     renderScores(score, highScore);
   }

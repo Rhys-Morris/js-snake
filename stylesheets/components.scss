@@ -24,6 +24,7 @@ main {
   border: 3px solid grey;
   border-radius: 1rem;
   box-shadow: 2px 2px 3px 3px rgba(0, 0, 0, 0.2);
+  padding: 1rem;
 }
 
 .game-row {
@@ -37,6 +38,8 @@ main {
 .game-cell {
   width: 100%;
   height: 100%;
+  transition: 0.02s all;
+  opacity: 1;
 }
 
 .active {
@@ -50,10 +53,16 @@ main {
   border-radius: 50%;
 }
 
+.collision {
+  background-color: orange;
+  border-radius: 0.3rem;
+  border: 1px solid yellowgreen;
+}
+
 .header {
   height: 10rem;
   width: 100%;
-  background-color: #666;
+  background-color: #333;
   color: #eeefef;
   padding: 1rem 5rem;
   display: flex;
