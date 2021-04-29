@@ -3,6 +3,7 @@ main {
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  width: 80rem;
 }
 
 .game {
@@ -21,8 +22,7 @@ main {
   grid-template-columns: 1fr;
   width: 60rem;
   height: 60rem;
-  border: 3px solid grey;
-  border-radius: 1rem;
+  border: 2px solid #444;
   box-shadow: 2px 2px 3px 3px rgba(0, 0, 0, 0.2);
   padding: 1rem;
 }
@@ -62,28 +62,31 @@ main {
 .header {
   height: 10rem;
   width: 100%;
-  background-color: #333;
-  color: #eeefef;
-  padding: 1rem 5rem;
+  background-color: #f5c7c7;
+  padding: 1rem 4rem;
   display: flex;
   justify-content: space-between;
   align-items: center;
+  margin-top: 3rem;
 
   &__logo {
     font-size: 4rem;
-    font-family: cursive;
+    font-family: "Lobster", cursive;
   }
 
   &__score-box {
     display: flex;
     justify-content: space-between;
     align-items: center;
-
+    text-transform: uppercase;
+    border: 2px solid #444;
+    background-color: #efefef;
+    padding: 2rem 4rem;
     & > * {
       &:first-child {
-        margin-right: 3rem;
+        margin-right: 5rem;
       }
-      font-size: 2rem;
+      font-size: 2.2rem;
     }
   }
 }
